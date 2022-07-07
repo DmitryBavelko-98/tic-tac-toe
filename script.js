@@ -30,10 +30,6 @@ const Player = (mark) => {
 const playerOne = Player('x');
 const playerTwo = Player('o');
 
-function declareWinner () {
-    
-}
-
 for (let i = 0; i < cells.length; i++) {
     cells[i].addEventListener('click', (e) => {
         if (gameBoard.game.length % 2 === 0) {
