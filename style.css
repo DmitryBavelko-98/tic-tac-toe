@@ -60,10 +60,11 @@ body {
 
 .gameboard {
     margin: 0 auto;
-    max-width: 50%;
-    background-color: #888;
-
+    padding: 0 25%;
+}
+.gameboard__cells {
     display: grid;
+    background-color: #888;
     grid-template-columns: repeat(auto-fit, 33.333%);
 }
 .gameboard__cell {
