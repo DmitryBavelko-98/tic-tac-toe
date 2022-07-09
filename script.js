@@ -1,13 +1,19 @@
 'use strict';
+const Player = (name, mark) => {
+    const move = (e) => {
+        gameController.round(e, mark);
+        gameController.changeTurn();
+    }
+    return {name, move}
+}
 
-const board = document.querySelector('.gameboard__cells');
-const cells = document.querySelectorAll('.gameboard__cell');
-const status = document.querySelector('.status__message');
-const reset = document.querySelector('.reset-btn');
-
-const gameBoard = (() => {
+const gameController = (() => {
     let game = ['', '', '', '', '', '', '', '', ''];
-    let turn = 1;
+    this.turn = 1;
+
+    const playerOne = Player('Player X', 'x');
+    const playerTwo = Player('Player O', 'o');
+
 
     const conditions = [
         [0, 3, 6],
@@ -32,66 +38,67 @@ const gameBoard = (() => {
 
     function checkWinner (cells) {
         if (game[cells[0]] === 'x' && game[cells[1]] === 'x' && game[cells[2]] === 'x') {
-            status.textContent = "Player X wins!";
+            gameBoard.status.textContent = "Player X wins!";
             gameOver();
         } else if (game[cells[0]] === 'o' && game[cells[1]] === 'o' && game[cells[2]] === 'o') {
-            status.textContent = "Player O wins!";
+            gameBoard.status.textContent = "Player O wins!";
             gameOver();
-        } else if (game.every(item => item !== '')) status.textContent = "It's a tie!";
+        } else if (game.every(item => item !== '')) gameBoard.status.textContent = "It's a tie!";
     }
     
     function gameOver() {
-        board.removeEventListener('click', playGame);
-    }
-
-    function resetField() {
-        game = game.map(item => item = '');
-        cells.forEach(cell => cell.textContent = '');
-        status.textContent = 'Player X';
-        turn = 1;
+        gameBoard.board.removeEventListener('click', playGame);
     }
 
     function changeTurn() {
         turn += 1;
     }
 
+    function showTurn(name) {
+        gameBoard.status.textContent = name;
+    };
+
+    function resetField () {
+        game = game.map(item => item = '');
+        gameBoard.cells.forEach(cell => cell.textContent = '');
+        gameBoard.status.textContent = "Let's start!";
+        turn = 1
+    }
+
     function playGame (e) {
         if (e.target.innerHTML !== '') return
         if (turn % 2 !== 0) {
-            playerTwo.showTurn();
+            showTurn(playerTwo.name);
             playerOne.move(e);
         } else {
-            playerOne.showTurn();
+            showTurn(playerOne.name);
             playerTwo.move(e);
         }   
     }
 
     return {
+        game,
         round,
         changeTurn,
+        playGame,
+        showTurn,
         resetField,
-        turn,
-        playGame
+        turn
     }
 })();
 
-const Player = (name, mark) => {
-    const showTurn = () => {
-        status.textContent = name;
-    };
-    const move = (e) => {
-        gameBoard.round(e, mark);
-        gameBoard.changeTurn();
-    }
-    return {showTurn, move}
-}
+const gameBoard =(() => {
+    const board = document.querySelector('.gameboard__cells');
+    const cells = document.querySelectorAll('.gameboard__cell');
+    const reset = document.querySelector('.reset-btn');
+    const status = document.querySelector('.status__message');
 
-const playerOne = Player('Player X', 'x');
-const playerTwo = Player('Player O', 'o');
+    board.addEventListener('click', gameController.playGame)
 
-board.addEventListener('click', gameBoard.playGame)
+    reset.addEventListener('click', () => {
+        gameController.resetField();
+        board.addEventListener('click', gameController.playGame);
+    });
 
-reset.addEventListener('click', () => {
-    gameBoard.resetField();
-    board.addEventListener('click', gameBoard.playGame);
-});
+    return {board, cells, status}
+})();
