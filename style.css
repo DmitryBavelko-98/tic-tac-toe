@@ -42,7 +42,7 @@ body {
 .header__title {
     text-align: center;
     padding: 30px;
-    font-size: 2rem;
+    font-size: 3rem;
     font-weight: 700;
 }
 .main {
@@ -55,12 +55,15 @@ body {
     background-color: #fff;
     padding: 30px;
 }
+.footer__copy {
+    text-align: center;
+}
 
 /* ==================================================== */
 
 .gameboard {
     margin: 0 auto;
-    padding: 0 25%;
+    padding: 0 27%;
     margin: 0 0 50px 0;
 }
 .gameboard__cells {
@@ -78,6 +81,7 @@ body {
     font-size: 7rem;
     text-align: center;
     vertical-align: middle;
+    transition: background-color .6s ease;
 }
 .gameboard__cell:hover {
     background-color: #999;
@@ -98,6 +102,17 @@ body {
     padding: 0 30px;
     height: 40px;
     border: none;
-    background-color: rgb(36, 194, 141);
+    background-color: #000;
     cursor: pointer;
+    border-radius: 5px;
+
+    font-weight: 600;
+    color: #fff;
+    text-transform: uppercase;
+    transition: background-color .5s ease, color .5s ease;
+}
+
+.reset-btn:hover {
+    background-color: #fff;
+    color: #000;
 }
